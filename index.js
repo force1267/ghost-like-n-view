@@ -4,11 +4,12 @@ const { add, get: posts, like, view } = require('./db')
 const express = require('express')
 const body = require('body-parser')
 const helmet = require('helmet')
+const cors = require('cors')
 
 const app = express()
+app.use(cors())
 app.use(helmet())
 app.use(body.json())
-
 // internal
 app.post('/post-created', (req, res) => {
     let current = req.body.post.current.slug
