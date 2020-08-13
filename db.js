@@ -11,6 +11,15 @@ var posts = {}
 ;(async () => {
     try {
         posts = JSON.parse(await read('./data.json'))
+        let { data: res } = await axios(`http://${process.env.HOST}/ghost/api/v3/content/posts/?key=${process.env.KEY}`)
+        for(let post of res.posts) {
+            if(!posts[post.slug]) {
+                posts[post.slug] = {
+                    like: 0,
+                    view: 0
+                }
+            }
+        }
     } catch (err) {
         console.log("trying to get posts for first time from", (`http://${process.env.HOST}/ghost/api/v3/content/posts/?key=${process.env.KEY}`))
         let { data: res } = await axios(`http://${process.env.HOST}/ghost/api/v3/content/posts/?key=${process.env.KEY}`)
